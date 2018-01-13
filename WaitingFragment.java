@@ -1,23 +1,19 @@
 package creative.can.com.suratpengantar.Fragment;
 
 
-import android.app.FragmentTransaction;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.CardView;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -27,11 +23,7 @@ import java.util.List;
 
 import creative.can.com.suratpengantar.Activity.DetailSuratTidakMampuActivity;
 import creative.can.com.suratpengantar.ActivityRT.HomeRTctivity;
-import creative.can.com.suratpengantar.Adapter.SuratMasukAdapter;
-import creative.can.com.suratpengantar.Adapter.SuratWaitingAdapter;
-import creative.can.com.suratpengantar.Model.ModelReadSurat;
 import creative.can.com.suratpengantar.Model.ResponseModel;
-import creative.can.com.suratpengantar.Model.RuleModel;
 import creative.can.com.suratpengantar.Model.SuratMenungguDiketahui;
 import creative.can.com.suratpengantar.R;
 import creative.can.com.suratpengantar.helper.Config;
@@ -47,12 +39,14 @@ import retrofit2.Response;
 public class WaitingFragment extends Fragment {
 
     ProgressDialog pd;
-    String  posisiRT,posisiRW;
+    String posisiRT, posisiRW;
     LinearLayout div;
     Config config;
     String mStatus;
-//    Handler handler = new Handler();
+    //    Handler handler = new Handler();
     private List<SuratMenungguDiketahui> list = new ArrayList<>();
+    private LinearLayout lyError;
+    private Button btnReload;
 
     public WaitingFragment() {
         // Required empty public constructor
@@ -64,11 +58,12 @@ public class WaitingFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View inflaterView = inflater.inflate(R.layout.fragment_waiting, container, false);
+        initView(inflaterView);
 
         div = (LinearLayout) inflaterView.findViewById(R.id.div);
 
         config = new Config(getActivity());
-        posisiRT= config.getSpPosisirt();
+        posisiRT = config.getSpPosisirt();
         posisiRW = config.getSpPosisirw();
         pd = new ProgressDialog(getActivity());
         getData();
@@ -76,11 +71,19 @@ public class WaitingFragment extends Fragment {
 //        this.handler = new Handler();
 //        this.handler.postDelayed(runnable, 3000);
 
+        btnReload.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                lyError.setVisibility(View.GONE);
+                getData();
+            }
+        });
+
 
         return inflaterView;
     }
 
-    public void getData(){
+    public void getData() {
         pd.setMessage("loading");
         pd.setCancelable(false);
         pd.show();
@@ -93,10 +96,9 @@ public class WaitingFragment extends Fragment {
                 pd.dismiss();
                 list = response.body().getSuratMenungguDiketahui();
 
-                if (list== null){
+                if (list == null) {
                     Toast.makeText(getActivity(), "Data Kosong", Toast.LENGTH_SHORT).show();
-                }
-                else {
+                } else {
 
 
                     for (final SuratMenungguDiketahui s : list) {
@@ -124,23 +126,22 @@ public class WaitingFragment extends Fragment {
                             keperluan.setText(s.getPERKEPERLUAN());
                             tanggal.setText(s.getPERCREATEDAT());
                             mStatus = s.getPERSTATUS();
-                            if (mStatus.equalsIgnoreCase("REJECT")){
+                            if (mStatus.equalsIgnoreCase("REJECT")) {
                                 status.setText("SURAT ANDA DITOLAK");
                                 status.setTextColor(getResources().getColor(R.color.merah));
-                            }else if (mStatus.equalsIgnoreCase("WAITING")){
+                            } else if (mStatus.equalsIgnoreCase("WAITING")) {
                                 status.setText("MENUNGGU PERSETUJUAN");
                                 status.setTextColor(getResources().getColor(R.color.bg_login));
-                            }
-                            else if (mStatus.equalsIgnoreCase("WAITING_APPROVAL_RT")){
+                            } else if (mStatus.equalsIgnoreCase("WAITING_APPROVAL_RT")) {
                                 status.setText("MENUNGGU PERSETUJUAN RT");
                                 status.setTextColor(getResources().getColor(R.color.bg_login));
-                            }else if (mStatus.equalsIgnoreCase("WAITING_APPROVAL_RW")){
+                            } else if (mStatus.equalsIgnoreCase("WAITING_APPROVAL_RW")) {
                                 status.setText("MENUNGGU PERSETUJUAN RW");
                                 status.setTextColor(getResources().getColor(R.color.bg_login));
-                            }else if (mStatus.equalsIgnoreCase("WAITING_KADES")){
+                            } else if (mStatus.equalsIgnoreCase("WAITING_KADES")) {
                                 status.setText("MENUNGGU KEPALA DESA");
                                 status.setTextColor(getResources().getColor(R.color.bg_login));
-                            }else if (mStatus.equalsIgnoreCase("PRINT")){
+                            } else if (mStatus.equalsIgnoreCase("PRINT")) {
                                 status.setText("SURAT ANDA TELAH DICETAK");
                                 status.setTextColor(getResources().getColor(R.color.bg_login));
                             }
@@ -165,26 +166,26 @@ public class WaitingFragment extends Fragment {
                                                     Intent intent = new Intent(getActivity(), DetailSuratTidakMampuActivity.class);
                                                     intent.putExtra("nama_surat", s.getSNAMA());
                                                     intent.putExtra("nik", s.getNIK());
-                                                    intent.putExtra("no_kk",s.getPERKK());
+                                                    intent.putExtra("no_kk", s.getPERKK());
                                                     intent.putExtra("nama", s.getPERNAMAWARGA());
-                                                    intent.putExtra("pekerjaan",s.getPERPEKERJAAN());
+                                                    intent.putExtra("pekerjaan", s.getPERPEKERJAAN());
                                                     intent.putExtra("tempat_lahir", s.getPERTMPLAHIR());
                                                     intent.putExtra("agama", s.getPERAGAMA());
                                                     intent.putExtra("tgl_lahir", s.getPERTGLLAHIR());
                                                     intent.putExtra("jk", s.getPERJK());
-                                                    intent.putExtra("alamat",s.getPERALAMAT());
-                                                    intent.putExtra("kelurahan",s.getPERKELURAHAN());
-                                                    intent.putExtra("rt",s.getPERRT());
-                                                    intent.putExtra("rw",s.getPERRW());
-                                                    intent.putExtra("kecamatan",s.getPERKECAMATAN());
-                                                    intent.putExtra("kabupaten",s.getPERKABUPATEN());
-                                                    intent.putExtra("provinsi",s.getPERPROVINSI());
-                                                    intent.putExtra("status_nikah",s.getPERSTATUSNIKAH());
-                                                    intent.putExtra("warganegara",s.getPERSTATUSPENDUDUK());
-                                                    intent.putExtra("status_kk",s.getPERSTATUSKK());
-                                                    intent.putExtra("pendidikan",s.getPERPENDIDIKAN());
-                                                    intent.putExtra("keperluan",s.getPERKEPERLUAN());
-                                                    intent.putExtra("dibuat",s.getPERCREATEDAT());
+                                                    intent.putExtra("alamat", s.getPERALAMAT());
+                                                    intent.putExtra("kelurahan", s.getPERKELURAHAN());
+                                                    intent.putExtra("rt", s.getPERRT());
+                                                    intent.putExtra("rw", s.getPERRW());
+                                                    intent.putExtra("kecamatan", s.getPERKECAMATAN());
+                                                    intent.putExtra("kabupaten", s.getPERKABUPATEN());
+                                                    intent.putExtra("provinsi", s.getPERPROVINSI());
+                                                    intent.putExtra("status_nikah", s.getPERSTATUSNIKAH());
+                                                    intent.putExtra("warganegara", s.getPERSTATUSPENDUDUK());
+                                                    intent.putExtra("status_kk", s.getPERSTATUSKK());
+                                                    intent.putExtra("pendidikan", s.getPERPENDIDIKAN());
+                                                    intent.putExtra("keperluan", s.getPERKEPERLUAN());
+                                                    intent.putExtra("dibuat", s.getPERCREATEDAT());
                                                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                                     startActivity(intent);
                                                     break;
@@ -271,8 +272,14 @@ public class WaitingFragment extends Fragment {
             public void onFailure(Call<ResponseModel> call, Throwable t) {
                 pd.dismiss();
                 Toast.makeText(getActivity(), t.getMessage(), Toast.LENGTH_SHORT).show();
+                lyError.setVisibility(View.VISIBLE);
             }
         });
+    }
+
+    private void initView(View inflaterView) {
+        lyError = (LinearLayout) inflaterView.findViewById(R.id.ly_error);
+        btnReload = (Button) inflaterView.findViewById(R.id.btn_reload);
     }
 
 //    public final Runnable runnable = new Runnable() {

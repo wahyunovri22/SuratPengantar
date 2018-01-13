@@ -6,11 +6,10 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.CardView;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -39,6 +38,8 @@ public class HistoryFragment extends Fragment {
     LinearLayout div;
     String mStatus;
     private List<SuratMenungguDiketahui> list = new ArrayList<>();
+    private Button btnReload;
+    private LinearLayout lyError;
 
     public HistoryFragment() {
         // Required empty public constructor
@@ -49,13 +50,28 @@ public class HistoryFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View inflaterView= inflater.inflate(R.layout.fragment_history, container, false);
+        View inflaterView = inflater.inflate(R.layout.fragment_history, container, false);
+        initView(inflaterView);
 
         config = new Config(getActivity());
         nikku = config.getSpId();
-        div = (LinearLayout)inflaterView.findViewById(R.id.div);
+        div = (LinearLayout) inflaterView.findViewById(R.id.div);
         pd = new ProgressDialog(getActivity());
 
+        Reload();
+
+        btnReload.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                lyError.setVisibility(View.GONE);
+                Reload();
+            }
+        });
+
+        return inflaterView;
+    }
+
+    private void Reload() {
         pd.setMessage("loading");
         pd.setCancelable(false);
         pd.show();
@@ -95,23 +111,22 @@ public class HistoryFragment extends Fragment {
                             keperluan.setText(s.getPERKEPERLUAN());
                             tanggal.setText(s.getPERCREATEDAT());
                             mStatus = s.getPERSTATUS();
-                            if (mStatus.equalsIgnoreCase("REJECT")){
+                            if (mStatus.equalsIgnoreCase("REJECT")) {
                                 status.setText("SURAT ANDA DITOLAK");
                                 status.setTextColor(getResources().getColor(R.color.merah));
-                            }else if (mStatus.equalsIgnoreCase("WAITING")){
+                            } else if (mStatus.equalsIgnoreCase("WAITING")) {
                                 status.setText("MENUNGGU PERSETUJUAN");
                                 status.setTextColor(getResources().getColor(R.color.bg_login));
-                            }
-                            else if (mStatus.equalsIgnoreCase("WAITING_APPROVAL_RT")){
+                            } else if (mStatus.equalsIgnoreCase("WAITING_APPROVAL_RT")) {
                                 status.setText("MENUNGGU PERSETUJUAN RT");
                                 status.setTextColor(getResources().getColor(R.color.bg_login));
-                            }else if (mStatus.equalsIgnoreCase("WAITING_APPROVAL_RW")){
+                            } else if (mStatus.equalsIgnoreCase("WAITING_APPROVAL_RW")) {
                                 status.setText("MENUNGGU PERSETUJUAN RW");
                                 status.setTextColor(getResources().getColor(R.color.bg_login));
-                            }else if (mStatus.equalsIgnoreCase("WAITING_KADES")){
+                            } else if (mStatus.equalsIgnoreCase("WAITING_KADES")) {
                                 status.setText("MENUNGGU PERSETUJUAN KEPALA DESA");
                                 status.setTextColor(getResources().getColor(R.color.bg_login));
-                            }else if (mStatus.equalsIgnoreCase("PRINT")){
+                            } else if (mStatus.equalsIgnoreCase("PRINT")) {
                                 status.setText("SURAT ANDA TELAH DICETAK");
                                 status.setTextColor(getResources().getColor(R.color.bg_login));
                             }
@@ -131,10 +146,14 @@ public class HistoryFragment extends Fragment {
             public void onFailure(Call<ResponseModel> call, Throwable t) {
                 pd.dismiss();
                 Toast.makeText(getActivity(), t.getMessage(), Toast.LENGTH_SHORT).show();
+                lyError.setVisibility(View.VISIBLE);
             }
         });
-
-        return inflaterView;
     }
 
+
+    private void initView(View inflaterView) {
+        btnReload = (Button) inflaterView.findViewById(R.id.btn_reload);
+        lyError = (LinearLayout) inflaterView.findViewById(R.id.ly_error);
+    }
 }

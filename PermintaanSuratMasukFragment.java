@@ -24,12 +24,7 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
-import creative.can.com.suratpengantar.ActivityRT.DetailPermintaanSuratMasukActivity;
 import creative.can.com.suratpengantar.ActivityRT.HomeRTctivity;
-import creative.can.com.suratpengantar.Adapter.SuratMasukAdapter;
-import creative.can.com.suratpengantar.Adapter.SuratWaitingAdapter;
-import creative.can.com.suratpengantar.Model.DataModel;
-import creative.can.com.suratpengantar.Model.ModelReadSurat;
 import creative.can.com.suratpengantar.Model.ResponseModel;
 import creative.can.com.suratpengantar.Model.SuratMenungguDiketahui;
 import creative.can.com.suratpengantar.R;
@@ -51,13 +46,15 @@ public class PermintaanSuratMasukFragment extends Fragment {
     ProgressDialog pd;
     //DataModel dataModel;
     Config config;
-    String posisi,posisi2,posisi3;
-    String posisiRT,posisiRW;
+    String posisi, posisi2, posisi3;
+    String posisiRT, posisiRW;
     LinearLayout div;
     String mStatus;
     private List<SuratMenungguDiketahui> list = new ArrayList<>();
 
     public static FragmentActivity ps;
+    private LinearLayout lyError;
+    private Button btnReload;
 
 
     public PermintaanSuratMasukFragment() {
@@ -70,6 +67,7 @@ public class PermintaanSuratMasukFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View inflaterView = inflater.inflate(R.layout.fragment_permintaan_surat_masuk, container, false);
+        initView(inflaterView);
 
         config = new Config(getActivity());
         div = (LinearLayout) inflaterView.findViewById(R.id.div);
@@ -77,10 +75,23 @@ public class PermintaanSuratMasukFragment extends Fragment {
         posisiRW = config.getSpPosisirw();
         pd = new ProgressDialog(getActivity());
         ps = getActivity();
-        recyclerView = (RecyclerView)inflaterView.findViewById(R.id.rv_surat);
+        recyclerView = (RecyclerView) inflaterView.findViewById(R.id.rv_surat);
         layoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(layoutManager);
 
+        Reload();
+
+        btnReload.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                lyError.setVisibility(View.GONE);
+                Reload();
+            }
+        });
+        return inflaterView;
+    }
+
+    private void Reload() {
         pd.setMessage("loading");
         pd.setCancelable(false);
         pd.show();
@@ -120,23 +131,22 @@ public class PermintaanSuratMasukFragment extends Fragment {
                             keperluan.setText(s.getPERKEPERLUAN());
                             tanggal.setText(s.getPERCREATEDAT());
                             mStatus = s.getPERSTATUS();
-                            if (mStatus.equalsIgnoreCase("REJECT")){
+                            if (mStatus.equalsIgnoreCase("REJECT")) {
                                 status.setText("SURAT ANDA DITOLAK");
                                 status.setTextColor(getResources().getColor(R.color.merah));
-                            }else if (mStatus.equalsIgnoreCase("WAITING")){
+                            } else if (mStatus.equalsIgnoreCase("WAITING")) {
                                 status.setText("MENUNGGU PERSETUJUAN");
                                 status.setTextColor(getResources().getColor(R.color.bg_login));
-                            }
-                            else if (mStatus.equalsIgnoreCase("WAITING_APPROVAL_RT")){
+                            } else if (mStatus.equalsIgnoreCase("WAITING_APPROVAL_RT")) {
                                 status.setText("MENUNGGU PERSETUJUAN RT");
                                 status.setTextColor(getResources().getColor(R.color.bg_login));
-                            }else if (mStatus.equalsIgnoreCase("WAITING_APPROVAL_RW")){
+                            } else if (mStatus.equalsIgnoreCase("WAITING_APPROVAL_RW")) {
                                 status.setText("MENUNGGU PERSETUJUAN RW");
                                 status.setTextColor(getResources().getColor(R.color.bg_login));
-                            }else if (mStatus.equalsIgnoreCase("WAITING_KADES")){
+                            } else if (mStatus.equalsIgnoreCase("WAITING_KADES")) {
                                 status.setText("MENUNGGU KEPALA DESA");
                                 status.setTextColor(getResources().getColor(R.color.bg_login));
-                            }else if (mStatus.equalsIgnoreCase("PRINT")){
+                            } else if (mStatus.equalsIgnoreCase("PRINT")) {
                                 status.setText("SURAT ANDA TELAH DICETAK");
                                 status.setTextColor(getResources().getColor(R.color.bg_login));
                             }
@@ -204,8 +214,13 @@ public class PermintaanSuratMasukFragment extends Fragment {
             public void onFailure(Call<ResponseModel> call, Throwable t) {
                 pd.dismiss();
                 Toast.makeText(getActivity(), t.getMessage(), Toast.LENGTH_SHORT).show();
+                lyError.setVisibility(View.VISIBLE);
             }
         });
-        return inflaterView;
+    }
+
+    private void initView(View inflaterView) {
+        lyError = (LinearLayout) inflaterView.findViewById(R.id.ly_error);
+        btnReload = (Button) inflaterView.findViewById(R.id.btn_reload);
     }
 }
