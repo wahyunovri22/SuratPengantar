@@ -41,6 +41,10 @@ public class HistoryFragment extends Fragment {
     private Button btnReload;
     private LinearLayout lyError;
 
+    public static HistoryFragment newInstance(){
+        HistoryFragment fragment = new HistoryFragment();
+        return fragment;
+    }
     public HistoryFragment() {
         // Required empty public constructor
     }

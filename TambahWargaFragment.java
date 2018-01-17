@@ -319,126 +319,126 @@ public class TambahWargaFragment extends Fragment {
             }
         });
 
-        edtKelurahan.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                final CharSequence[] dialogItem = {"Krajankulon", "Plantaran"};
-                AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
-                builder.setTitle("Pilih Kelurahan");
-                builder.setItems(dialogItem, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
+//        edtKelurahan.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                final CharSequence[] dialogItem = {"Krajankulon", "Plantaran"};
+//                AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
+//                builder.setTitle("Pilih Kelurahan");
+//                builder.setItems(dialogItem, new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialogInterface, int i) {
+//
+//                        switch (i) {
+//                            case 0:
+//                                edtKelurahan.setText("Krajankulon");
+//                                break;
+//                            case 1:
+//                                edtKelurahan.setText("Plantaran");
+//                                break;
+//                        }
+//                    }
+//                });
+//                builder.create().show();
+//            }
+//        });
 
-                        switch (i) {
-                            case 0:
-                                edtKelurahan.setText("Krajankulon");
-                                break;
-                            case 1:
-                                edtKelurahan.setText("Plantaran");
-                                break;
-                        }
-                    }
-                });
-                builder.create().show();
-            }
-        });
-
-        edtRt.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                final CharSequence[] dialogItem = {"1", "2", "3", "4", "5", "6"};
-                AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
-                builder.setTitle("Pilih RT");
-                builder.setItems(dialogItem, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-
-                        switch (i) {
-                            case 0:
-                                edtRt.setText("1");
-                                break;
-                            case 1:
-                                edtRt.setText("2");
-                                break;
-                            case 2:
-                                edtRt.setText("3");
-                                break;
-                            case 3:
-                                edtRt.setText("4");
-                                break;
-                            case 4:
-                                edtRt.setText("5");
-                                break;
-                            case 5:
-                                edtRt.setText("6");
-                                break;
-                        }
-                    }
-                });
-                builder.create().show();
-            }
-        });
-
-        edtRw.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View view) {
-                final CharSequence[] dialogItem = {"1", "2", "3", "4", "5", "6"};
-                AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
-                builder.setTitle("Pilih RW");
-                builder.setItems(dialogItem, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-
-                        switch (i) {
-                            case 0:
-                                edtRw.setText("1");
-                                break;
-                            case 1:
-                                edtRw.setText("2");
-                                break;
-                            case 2:
-                                edtRw.setText("3");
-                                break;
-                            case 3:
-                                edtRw.setText("4");
-                                break;
-                            case 4:
-                                edtRw.setText("5");
-                                break;
-                            case 5:
-                                edtRw.setText("6");
-                                break;
-                        }
-                    }
-                });
-                builder.create().show();
-            }
-        });
-
-        edtKecamatan.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                final CharSequence[] dialogItem = {"Kaliwungu", "Kaliwungu Selatan"};
-                AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
-                builder.setTitle("Pilih Kecamatan");
-                builder.setItems(dialogItem, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-
-                        switch (i) {
-                            case 0:
-                                edtKecamatan.setText("Kaliwungu");
-                                break;
-                            case 1:
-                                edtKecamatan.setText("Kaliwungu Selatan");
-                                break;
-                        }
-                    }
-                });
-                builder.create().show();
-            }
-        });
+//        edtRt.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                final CharSequence[] dialogItem = {"1", "2", "3", "4", "5", "6"};
+//                AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
+//                builder.setTitle("Pilih RT");
+//                builder.setItems(dialogItem, new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialogInterface, int i) {
+//
+//                        switch (i) {
+//                            case 0:
+//                                edtRt.setText("1");
+//                                break;
+//                            case 1:
+//                                edtRt.setText("2");
+//                                break;
+//                            case 2:
+//                                edtRt.setText("3");
+//                                break;
+//                            case 3:
+//                                edtRt.setText("4");
+//                                break;
+//                            case 4:
+//                                edtRt.setText("5");
+//                                break;
+//                            case 5:
+//                                edtRt.setText("6");
+//                                break;
+//                        }
+//                    }
+//                });
+//                builder.create().show();
+//            }
+//        });
+//
+//        edtRw.setOnClickListener(new View.OnClickListener() {
+//
+//            @Override
+//            public void onClick(View view) {
+//                final CharSequence[] dialogItem = {"1", "2", "3", "4", "5", "6"};
+//                AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
+//                builder.setTitle("Pilih RW");
+//                builder.setItems(dialogItem, new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialogInterface, int i) {
+//
+//                        switch (i) {
+//                            case 0:
+//                                edtRw.setText("1");
+//                                break;
+//                            case 1:
+//                                edtRw.setText("2");
+//                                break;
+//                            case 2:
+//                                edtRw.setText("3");
+//                                break;
+//                            case 3:
+//                                edtRw.setText("4");
+//                                break;
+//                            case 4:
+//                                edtRw.setText("5");
+//                                break;
+//                            case 5:
+//                                edtRw.setText("6");
+//                                break;
+//                        }
+//                    }
+//                });
+//                builder.create().show();
+//            }
+//        });
+//
+//        edtKecamatan.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                final CharSequence[] dialogItem = {"Kaliwungu", "Kaliwungu Selatan"};
+//                AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
+//                builder.setTitle("Pilih Kecamatan");
+//                builder.setItems(dialogItem, new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialogInterface, int i) {
+//
+//                        switch (i) {
+//                            case 0:
+//                                edtKecamatan.setText("Kaliwungu");
+//                                break;
+//                            case 1:
+//                                edtKecamatan.setText("Kaliwungu Selatan");
+//                                break;
+//                        }
+//                    }
+//                });
+//                builder.create().show();
+//            }
+//        });
 
         return inflaterView;
     }
